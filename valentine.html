@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Valentine for Sakeena Fathima</title>
+<style>
+  :root{
+    --pink:#ff3f8e;
+    --hot:#ff1e6e;
+    --light:#ffe6f2;
+    --text:#333;
+    --card:#fff;
+  }
+
+  html,body{
+    height:100%;
+    margin:0;
+    font-family:"Poppins", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    background:var(--light);
+    overflow:hidden; /* avoid scrollbars when No jumps */
+    color:var(--text);
+  }
+
+  /* Floating emoji-heart background (light + subtle) */
+  .bg{
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    z-index:0;
+    opacity:.18;
+  }
+  .bg .float{
+    position:absolute;
+    font-size:28px;
+    animation: drift linear infinite;
+    filter: blur(0.2px);
+  }
+  @keyframes drift{
+    from{ transform: translateY(110vh) translateX(0) rotate(0deg); opacity:.0; }
+    10% { opacity:.7; }
+    to  { transform: translateY(-10vh) translateX(40px) rotate(360deg); opacity:.0; }
+  }
+
+  /* Center card */
+  .wrap{
+    position:relative;
+    height:100%;
+    display:grid;
+    place-items:center;
+    z-index:1; /* above background hearts */
+  }
+  .card{
+    width:min(94vw, 640px);
+    padding:28px 26px 34px; /* extra bottom padding */
+    background:var(--card);
+    border-radius:18px;
+    box-shadow:0 14px 42px rgba(255,63,142,.25);
+    text-align:center;
+    position:relative;
+  }
+  h1{
+    margin:0 0 14px; /* extra space below title */
+    font-size:clamp(26px,5vw,38px);
+    color:var(--pink);
+    line-height:1.25;
+  }
+
+  /* Buttons row (aligned on load) */
+  .btns{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:16px;
+    margin-top:16px;   /* push away from title */
+    min-height:140px;  /* reserve space so scaled Yes won't overlap */
+    position:relative;
+  }
+
+  button{
+    cursor:pointer;
+    border:none;
+    padding:16px 28px;
+    border-radius:999px;
+    font-weight:700;
+    font-size:20px;
+    transition:transform .12s ease, background .2s ease, box-shadow .2s ease, opacity .2s, left .12s ease, top .12s ease;
+    will-change: transform, left, top;
+    z-index:2;
+  }
+
+  .yes{
+    background:var(--pink);
+    color:#fff;
+    box-shadow:0 10px 22px rgba(255,63,142,.35);
+    position:relative; /* stays in row */
+    transform-origin:center top; /* scale grows downwards */
+  }
+  .yes:hover{ background:var(--hot); transform:translateY(2px) scale(1.05); }
+
+  /* NO: starts aligned in row; after first chase becomes fixed and roams the screen */
+  .no{
+    background:#fff;
+    color:var(--pink);
+    border:2px solid var(--pink);
+    position:relative; /* initial: aligned */
+  }
+
+  .footer{ margin-top:10px; font-size:14px; opacity:.65; }
+
+  /* GIF overlay with big "YAY" text */
+  .overlay{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.6);
+    display:none;
+    align-items:center;
+    justify-content:center;
+    z-index:9999;
+  }
+  .overlay.show{ display:flex; }
+  .overlay .wrapGif{
+    position:relative;
+    background:#000;
+    padding:8px;
+    border-radius:14px;
+    max-width:min(92vw, 520px);
+    box-shadow:0 12px 40px rgba(0,0,0,.45);
+  }
+  .overlay img{
+    width:100%;
+    height:auto;
+    display:block;
+    border-radius:10px;
+  }
+  .overlay .yay{
+    position:absolute;
+    left:50%;
+    top:14px;
+    transform:translateX(-50%);
+    color:#fff;
+    font-weight:900;
+    font-size:clamp(28px, 6vw, 56px);
+    text-shadow:0 2px 12px rgba(0,0,0,.45);
+    letter-spacing:1px;
+    pointer-events:none;
+  }
+  .overlay .hint{
+    color:#fff;
+    text-align:center;
+    margin-top:8px;
+    font-size:13px;
+    opacity:.85;
+  }
+
+  /* Celebration hearts when pressing Yes */
+  .heart{
+    position:fixed;
+    pointer-events:none;
+    font-size:18px;
+    animation: fall 1.6s linear forwards;
+    filter: drop-shadow(0 2px 2px rgba(0,0,0,.15));
+    z-index:900;
+  }
+  @keyframes fall{ to{ transform: translateY(110vh) rotate(360deg); opacity:.1; } }
+</style>
+</head>
+<body>
+
+  <!-- Light floating hearts background -->
+  <div class="bg" id="bg"></div>
+
+  <div class="wrap">
+    <div class="card" id="card">
+      <h1 id="title">Sakeena Fathima,<br/>will you be my Valentine? 💖</h1>
+
+      <div class="btns" id="btnRow">
+        <button type="button" class="yes" id="yesBtn">Yes 💕</button>
+        <button type="button" class="no"  id="noBtn">No 😅</button>
+      </div>
+
+      <div class="footer">(Try tapping “No”) 😉</div>
+    </div>
+  </div>
+
+  <!-- Overlay with GIF + "YAY" text -->
+  <div class="overlay" id="overlay" aria-hidden="true">
+    <div class="wrapGif">
+      <div class="yay">YAY 🎉</div>
+      <img id="shockGif" alt="YAY!">
+      <div class="hint">Tap anywhere to close</div>
+    </div>
+  </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  // Kid President GIF (from GIPHY). If hotlink fails, download and use "./kidpresident.gif".
+  const shockGifUrl = "https://media.giphy.com/media/3kvYEldEEr0DC/giphy.gif";
+
+  const hearts = ['💖','💘','💝','💗','💕'];
+
+  const title   = document.getElementById('title');
+  const yesBtn  = document.getElementById('yesBtn');
+  const noBtn   = document.getElementById('noBtn');
+  const overlay = document.getElementById('overlay');
+  const gifImg  = document.getElementById('shockGif');
+  const bg      = document.getElementById('bg');
+
+  /* Floating emoji-heart background (light theme) */
+  function spawnBgHearts(count=28){
+    const vw = window.innerWidth;
+    for(let i=0;i<count;i++){
+      const s = document.createElement('span');
+      s.className = 'float';
+      s.textContent = hearts[Math.floor(Math.random()*hearts.length)];
+      const left = Math.random()*vw;
+      const delay = Math.random()*6;
+      const dur   = 7 + Math.random()*6;
+      s.style.left = left+'px';
+      s.style.bottom = '-10vh';
+      s.style.animationDuration = dur+'s';
+      s.style.animationDelay = delay+'s';
+      bg.appendChild(s);
+    }
+  }
+  spawnBgHearts();
+
+  /* Make NO roam the viewport AFTER the first chase.
+     On load it remains aligned in the row. */
+  let roamingActivated = false;
+  function activateRoaming(){
+    if(roamingActivated) return;
+    roamingActivated = true;
+    // Switch to fixed so it can roam the whole screen
+    noBtn.style.position = 'fixed';
+    jumbleNo(); // first jump
+  }
+
+  function jumbleNo(){
+    const btn  = noBtn.getBoundingClientRect();
+    const pad  = 8;
+    const maxX = Math.max(window.innerWidth  - btn.width  - pad, 0);
+    const maxY = Math.max(window.innerHeight - btn.height - pad, 0);
+    const x = Math.random() * maxX;
+    const y = Math.random() * maxY;
+    noBtn.style.left = x + 'px';
+    noBtn.style.top  = y + 'px';
+  }
+
+  /* Grow YES when chasing NO — scale from top, move slightly down to avoid overlap */
+  let yesScale = 1;
+  function boostYes(){
+    yesScale = Math.min(yesScale + 0.15, 2.0);
+    yesBtn.style.transform = `translateY(10px) scale(${yesScale})`;
+  }
+
+  /* Make NO dodge frequently (and enable roaming on first attempt) */
+  ['mouseenter','mousemove','mouseover','focus','touchstart','click'].forEach(evt=>{
+    noBtn.addEventListener(evt, e => {
+      e.preventDefault();
+      activateRoaming();
+      jumbleNo();
+      boostYes();
+    }, { passive:false });
+  });
+
+  // YES behavior: change title + show GIF overlay + hearts
+  yesBtn.addEventListener('click', () => {
+    title.textContent = "YAY! 💘";
+    spawnHearts(30);
+    gifImg.src = shockGifUrl;
+    overlay.classList.add('show');
+    overlay.setAttribute('aria-hidden','false');
+    noBtn.disabled = true;
+    noBtn.style.opacity = .45;
+  });
+
+  // Close overlay on click/tap
+  overlay.addEventListener('click', () => {
+    overlay.classList.remove('show');
+    overlay.setAttribute('aria-hidden','true');
+  });
+
+  // Falling hearts when pressing Yes
+  function spawnHearts(n=20){
+    for(let i=0;i<n;i++){
+      const span = document.createElement('span');
+      span.className = 'heart';
+      span.textContent = hearts[Math.floor(Math.random()*hearts.length)];
+      span.style.left = (Math.random()*100)+'vw';
+      span.style.top  = '-5vh';
+      span.style.transform = `translateY(0) rotate(${Math.random()*180}deg)`;
+      span.style.fontSize = (14+Math.random()*16)+'px';
+      document.body.appendChild(span);
+      setTimeout(()=> span.remove(), 1800);
+    }
+  }
+});
+</script>
+</body>
+</html>
