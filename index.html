@@ -4,318 +4,259 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Valentine for Sakeena Fathima</title>
+
 <style>
-  :root{
-    --pink:#ff3f8e;
-    --hot:#ff1e6e;
-    --light:#fff3f8;
-    --text:#2b2b2b;
-    --card:#ffffff;
-    --shadow:0 14px 42px rgba(255,63,142,.20), 0 6px 18px rgba(0,0,0,.05);
-  }
+:root{
+  --pink:#ff3f8e;
+  --hot:#ff1e6e;
+  --bg:#ffd9ea;
+  --text:#2b2b2b;
+  --card:#ffffff;
 
-  /* Animated dreamy background */
-  html,body{
-    height:100%; margin:0; overflow:hidden; color:var(--text);
-    font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
-    background: linear-gradient(135deg,#ffdde9,#ffe6f7,#ffd1e8);
-    background-size: 400% 400%;
-    animation: gradientShift 12s ease-in-out infinite;
-  }
-  @keyframes gradientShift{
-    0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}
-  }
+  /* Mobile safe area */
+  --safe-left: env(safe-area-inset-left, 0px);
+  --safe-right: env(safe-area-inset-right, 0px);
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+}
 
-  /* Floating hearts background */
-  .bg{ position:fixed; inset:0; pointer-events:none; z-index:0; opacity:.18; }
-  .float{
-    position:absolute; font-size:24px; animation: drift linear infinite;
-    filter: blur(.2px);
-  }
-  @keyframes drift{
-    from{ transform: translateY(110vh) translateX(0) rotate(0deg); opacity:0; }
-    12% { opacity:.8; }
-    to  { transform: translateY(-15vh) translateX(60px) rotate(360deg); opacity:0; }
-  }
+html,body{
+  margin:0; padding:0;
+  height:100%; overflow:hidden;
+  background: var(--bg);
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  color:var(--text);
+}
 
-  /* Centered card */
-  .wrap{ position:relative; height:100%; display:grid; place-items:center; z-index:1; padding:18px; }
-  .card{
-    width:min(94vw, 680px);
-    padding:34px 26px 40px;
-    background:var(--card);
-    border-radius:22px;
-    box-shadow: var(--shadow);
-    text-align:center;
-    border: 1px solid #ffe0ee;
-    transform-style: preserve-3d;
-    transition: transform .15s ease-out;
-  }
-  .ribbon{
-    position:absolute; inset:auto auto -14px 50%; transform:translateX(-50%);
-    background:linear-gradient(90deg,#ff8fb6,#ff3f8e,#ff8fb6);
-    height:10px; width:160px; border-radius:999px; opacity:.85;
-  }
+/* Watermark background */
+.wm{
+  position:fixed; inset:0; pointer-events:none;
+  opacity:.10; z-index:0;
+  background:
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><text x='16' y='70' font-size='44'>💖</text></svg>") left top / 120px 120px repeat,
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><text x='44' y='86' font-size='42'>💞</text></svg>") 60px 60px / 140px 140px repeat,
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><text x='54' y='100' font-size='42'>💘</text></svg>") 20px 100px / 160px 160px repeat,
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='110' height='110'><text x='42' y='66' font-size='26'>✨</text></svg>") 90px 10px / 110px 110px repeat;
+}
 
-  /* Typing title */
-  h1{
-    margin:0 0 12px; color:var(--pink);
-    font-size:clamp(26px,5.2vw,40px); line-height:1.22; letter-spacing:.2px;
-  }
-  .subtitle{ margin:0 0 6px; font-size:clamp(14px,3.5vw,16px); opacity:.7; }
+.wrap{
+  height:100%; display:grid; place-items:center;
+  position:relative; z-index:1; padding:18px;
+}
 
-  /* Buttons row */
-  .btns{
-    display:flex; align-items:center; justify-content:center;
-    gap:16px; margin-top:18px;
-    min-height:150px; position:relative;
-  }
+.card{
+  width:min(94vw, 680px);
+  padding:34px 26px 40px;
+  background:var(--card);
+  border-radius:22px;
+  text-align:center;
+  box-shadow:0 14px 42px rgba(255,63,142,.20),
+             0 6px 18px rgba(0,0,0,.05);
+  border: 1px solid #ffe0ee;
+}
 
-  button{
-    cursor:pointer; border:none; padding:16px 28px; border-radius:999px;
-    font-weight:700; font-size:20px;
-    transition:
-      transform .2s ease, background .2s ease, box-shadow .2s ease, opacity .2s,
-      left .28s ease, top .28s ease;
-    will-change: transform, left, top; z-index:2;
-    user-select:none;
-  }
+h1{
+  color:var(--pink);
+  font-size:clamp(26px,5.2vw,40px);
+  margin:0 0 12px;
+  min-height:70px;
+}
 
-  .yes{
-    background:linear-gradient(180deg, var(--pink), var(--hot));
-    color:#fff; box-shadow:0 10px 28px rgba(255,63,142,.35);
-    position:relative; transform-origin:center top;
-  }
-  .yes:hover{ transform: translateY(2px) scale(1.05); }
+.subtitle{ opacity:.7; margin-top:-4px; }
 
-  /* Subtle sparkles on YES */
-  .yes::after{
-    content:"✨"; position:absolute; right:-10px; top:-10px; font-size:18px; opacity:0;
-    animation: sparkle 1.8s ease-in-out infinite;
-  }
-  @keyframes sparkle{
-    0%,100%{ transform:translateY(0) scale(1); opacity:.0; }
-    50%{ transform:translateY(-6px) scale(1.1); opacity:.9; }
-  }
+.btns{
+  margin-top:18px;
+  display:flex; gap:16px;
+  justify-content:center;
+  min-height:140px;
+}
 
-  .no{
-    background:#fff; color:var(--pink); border:2px solid var(--pink);
-    position:relative; /* will switch to fixed when it starts roaming */
-  }
+button{
+  padding:16px 28px;
+  font-size:20px; font-weight:700;
+  border:none; border-radius:999px;
+  cursor:pointer; user-select:none;
+}
 
-  .footer{ margin-top:6px; font-size:14px; opacity:.65; }
+.yes{
+  background:linear-gradient(180deg, var(--pink), var(--hot));
+  color:#fff;
+}
+.yes:hover{ transform:scale(1.05); }
 
-  /* Overlay when YES */
-  .overlay{
-    position:fixed; inset:0; background:rgba(0,0,0,.6);
-    display:none; align-items:center; justify-content:center; z-index:9999; padding:18px;
-  }
-  .overlay.show{ display:flex; }
-  .overlay .wrapGif{
-    position:relative; background:#000; padding:10px; border-radius:16px;
-    max-width:min(94vw, 540px); box-shadow:0 18px 48px rgba(0,0,0,.45);
-  }
-  .overlay img{ width:100%; height:auto; display:block; border-radius:12px; }
-  .overlay .yay{
-    position:absolute; left:50%; top:14px; transform:translateX(-50%);
-    color:#fff; font-weight:900; font-size:clamp(28px, 6vw, 56px);
-    text-shadow:0 2px 12px rgba(0,0,0,.45); letter-spacing:1px; pointer-events:none;
-  }
-  .overlay .hint{ color:#fff; text-align:center; margin-top:8px; font-size:13px; opacity:.85; }
+.no{
+  background:#fff;
+  color:var(--pink);
+  border:2px solid var(--pink);
+  position:relative;
+  z-index:50;
+}
 
-  /* Hearts burst confetti */
-  .heart{
-    position:fixed; pointer-events:none; font-size:18px;
-    filter: drop-shadow(0 2px 2px rgba(0,0,0,.15));
-    z-index:900;
-  }
+.footer{ opacity:.6; margin-top:8px; }
 
-  /* Small screens tweak */
-  @media (max-width: 380px){
-    .btns{ min-height: 130px; }
-    button{ font-size:18px; padding:14px 22px; }
-  }
+/*** Overlay ***/
+.overlay{
+  position:fixed; inset:0;
+  background:rgba(0,0,0,.6);
+  display:none; z-index:9999;
+  justify-content:center; align-items:center;
+}
+.overlay.show{ display:flex; }
+
+.wrapGif{
+  background:#000;
+  padding:10px; border-radius:16px;
+  max-width:min(94vw, 540px);
+}
+.yay{
+  position:absolute;
+  top:14px; left:50%; transform:translateX(-50%);
+  color:white; font-size:40px; font-weight:900;
+}
+.overlay img{ width:100%; border-radius:12px; }
+
+/*** Heart burst items ***/
+.heart{
+  position:fixed; z-index:999;
+  font-size:20px;
+  pointer-events:none;
+}
 </style>
 </head>
+
 <body>
 
-  <!-- Floating hearts background -->
-  <div class="bg" id="bg"></div>
+<div class="wm"></div>
 
-  <div class="wrap">
-    <div class="card" id="card">
-      <h1 id="title"></h1>
-      <p class="subtitle">I promise unlimited smiles and your favorite snacks. 😄</p>
+<div class="wrap">
+  <div class="card">
+    <h1 id="title"></h1>
+    <p class="subtitle">I promise unlimited smiles and your favorite snacks. 😄</p>
 
-      <div class="btns">
-        <button type="button" class="yes" id="yesBtn">Yes 💕</button>
-        <button type="button" class="no"  id="noBtn">No 😅</button>
-      </div>
-
-      <div class="footer">(Try tapping “No”) 😉</div>
-      <div class="ribbon"></div>
+    <div class="btns">
+      <button class="yes" id="yesBtn">Yes 💕</button>
+      <button class="no" id="noBtn">No 😅</button>
     </div>
-  </div>
 
-  <!-- Overlay with GIF + "YAY" text -->
-  <div class="overlay" id="overlay" aria-hidden="true">
-    <div class="wrapGif">
-      <div class="yay">YAY 🎉</div>
-      <img id="shockGif" alt="YAY!">
-      <div class="hint">Tap anywhere to close</div>
-    </div>
+    <div class="footer">(Try tapping “No”) 😉</div>
   </div>
+</div>
+
+<!-- Overlay -->
+<div class="overlay" id="overlay">
+  <div class="wrapGif">
+    <div class="yay">YAY 🎉</div>
+    <img id="gif">
+  </div>
+</div>
 
 <script>
-document.addEventListener('DOMContentLoaded', function () {
-  // === Assets ===
-  const SHOCK_GIF = "https://media.giphy.com/media/3kvYEldEEr0DC/giphy.gif";
-
-  // === Elements ===
-  const hearts = ['💖','💘','💝','💗','💕'];
-  const title   = document.getElementById('title');
-  const yesBtn  = document.getElementById('yesBtn');
-  const noBtn   = document.getElementById('noBtn');
-  const overlay = document.getElementById('overlay');
-  const gifImg  = document.getElementById('shockGif');
-  const bg      = document.getElementById('bg');
-  const card    = document.getElementById('card');
-
-  // === 1) Typing title (multi-line, reliable) ===
-  const fullText = "Sakeena Fathima,\nwill you be my Valentine? 💖";
-  typeText(title, fullText, 26);
-  function typeText(el, str, speed=30){
-    el.innerHTML = "";
-    let i = 0;
-    const t = setInterval(()=>{
-      if(i >= str.length){ clearInterval(t); return; }
-      const ch = str[i++];
-      if(ch === "\n"){ el.insertAdjacentHTML('beforeend', '<br/>'); }
-      else{ el.textContent += ch; }
-    }, speed);
+/* Typing effect */
+const title = document.getElementById("title");
+const msg = "Sakeena Fathima,\nwill you be my Valentine? 💖";
+let i = 0;
+(function type(){
+  if(i < msg.length){
+    title.innerHTML += msg[i] === "\n" ? "<br>" : msg[i];
+    i++;
+    setTimeout(type, 26);
   }
+})();
 
-  // === 2) Floating background hearts (layered sizes) ===
-  function spawnBgHearts(count=34){
-    const vw = window.innerWidth;
-    for(let i=0;i<count;i++){
-      const s = document.createElement('span');
-      s.className = 'float';
-      s.textContent = hearts[Math.floor(Math.random()*hearts.length)];
-      const left = Math.random()*vw;
-      const delay = Math.random()*8;
-      const dur   = 8 + Math.random()*8;
-      const size  = 18 + Math.random()*20;
-      s.style.left = left+'px';
-      s.style.bottom = '-12vh';
-      s.style.animationDuration = dur+'s';
-      s.style.animationDelay = delay+'s';
-      s.style.fontSize = size+'px';
-      bg.appendChild(s);
+/* Buttons */
+const yesBtn = document.getElementById("yesBtn");
+const noBtn  = document.getElementById("noBtn");
+const overlay= document.getElementById("overlay");
+const gifImg = document.getElementById("gif");
+
+/* Keep No always visible — safe area fix */
+function vp(){
+  const v = window.visualViewport;
+  return {
+    w: v ? v.width  : innerWidth,
+    h: v ? v.height : innerHeight
+  }
+}
+function clamp(v,min,max){ return Math.min(Math.max(v,min),max); }
+
+/* Position No button randomly but always on screen */
+function moveNoRandom(){
+  const r = noBtn.getBoundingClientRect();
+  const v = vp();
+  const pad = 12;
+
+  const maxX = v.w - r.width  - pad;
+  const maxY = v.h - r.height - pad;
+
+  const x = clamp(Math.random()*maxX, pad, maxX);
+  const y = clamp(Math.random()*maxY, pad, maxY);
+
+  noBtn.style.left = x + "px";
+  noBtn.style.top  = y + "px";
+}
+
+let roaming = false;
+
+/* Trigger roaming */
+["mouseenter","mouseover","mousemove","touchstart","click"].forEach(evt=>{
+  noBtn.addEventListener(evt, e=>{
+    e.preventDefault();
+
+    if(!roaming){
+      roaming = true;
+      noBtn.style.position = "fixed";
     }
-  }
-  spawnBgHearts();
 
-  // === 3) Card tilt on pointer for a premium feel ===
-  card.addEventListener('pointermove', (e)=>{
-    const rect = card.getBoundingClientRect();
-    const x = (e.clientX - rect.left) / rect.width;  // 0..1
-    const y = (e.clientY - rect.top)  / rect.height; // 0..1
-    const rx = (0.5 - y) * 6; // tilt range
-    const ry = (x - 0.5) * 8;
-    card.style.transform = `perspective(900px) rotateX(${rx}deg) rotateY(${ry}deg)`;
-  });
-  card.addEventListener('pointerleave', ()=>{
-    card.style.transform = 'perspective(900px) rotateX(0) rotateY(0)';
-  });
-
-  // === 4) NO button roaming (smooth glide) ===
-  let roamingActivated = false;
-  function activateRoaming(){
-    if(roamingActivated) return;
-    roamingActivated = true;
-    noBtn.style.position = 'fixed';   // allow roaming anywhere
-    glideNo();                        // first move
-  }
-  function glideNo(){
-    const btn  = noBtn.getBoundingClientRect();
-    const pad  = 8;
-    const maxX = Math.max(window.innerWidth  - btn.width  - pad, 0);
-    const maxY = Math.max(window.innerHeight - btn.height - pad, 0);
-    const x = Math.random() * maxX;
-    const y = Math.random() * maxY;
-    noBtn.style.left = x + 'px';
-    noBtn.style.top  = y + 'px';
-  }
-
-  // Grow YES a bit while chasing NO
-  let yesScale = 1;
-  function boostYes(){
-    yesScale = Math.min(yesScale + 0.14, 2.0);
-    yesBtn.style.transform = `translateY(8px) scale(${yesScale})`;
-  }
-
-  // Trigger roaming on any attempt to approach or click NO
-  ['mouseenter','mousemove','mouseover','focus','touchstart','click'].forEach(evt=>{
-    noBtn.addEventListener(evt, e => {
-      e.preventDefault();
-      activateRoaming();
-      glideNo();
-      boostYes();
-    }, { passive:false });
-  });
-
-  // === 5) Heart burst fireworks (when YES) ===
-  function heartBurst(n=26){
-    const cx = window.innerWidth  / 2;
-    const cy = window.innerHeight / 2;
-    for(let i=0;i<n;i++){
-      const span = document.createElement('span');
-      span.className = 'heart';
-      span.textContent = hearts[Math.floor(Math.random()*hearts.length)];
-      const angle = Math.random() * Math.PI * 2;  // 0..2π
-      const dist  = 90 + Math.random()*140;
-      const x = Math.cos(angle) * dist;
-      const y = Math.sin(angle) * dist;
-      const size = 16 + Math.random()*18;
-
-      span.style.left = cx + 'px';
-      span.style.top  = cy + 'px';
-      span.style.fontSize = size + 'px';
-
-      // Animate outwards then fade
-      const a = span.animate([
-        { transform: 'translate(-50%, -50%) scale(1)', opacity: 1 },
-        { transform: `translate(calc(-50% + ${x}px), calc(-50% + ${y}px)) scale(0.8)`, opacity: 0 }
-      ], { duration: 1000 + Math.random()*400, easing: 'cubic-bezier(.2,.8,.2,1)', fill: 'forwards' });
-
-      document.body.appendChild(span);
-      a.onfinish = () => span.remove();
-    }
-  }
-
-  // === 6) Overlay open/close ===
-  function openOverlay(){
-    gifImg.src = SHOCK_GIF;
-    overlay.classList.add('show');
-    overlay.setAttribute('aria-hidden','false');
-  }
-  function closeOverlay(){
-    overlay.classList.remove('show');
-    overlay.setAttribute('aria-hidden','true');
-  }
-  overlay.addEventListener('click', closeOverlay);
-
-  // === 7) YES click behaviour ===
-  yesBtn.addEventListener('click', () => {
-    title.textContent = "YAY! 💘";
-    heartBurst(40);
-    openOverlay();
-    noBtn.disabled = true;
-    noBtn.style.opacity = .45;
-  });
-
+    moveNoRandom();
+  }, {passive:false});
 });
+
+/* YES — Show GIF + heart burst */
+yesBtn.onclick = ()=>{
+  title.textContent = "YAY! 💘";
+  heartBurst(30);
+
+  gifImg.src = "https://media.giphy.com/media/3kvYEldEEr0DC/giphy.gif";
+  overlay.classList.add("show");
+  noBtn.disabled = true;
+  noBtn.style.opacity=.4;
+};
+
+/* Close overlay */
+overlay.onclick = ()=> overlay.classList.remove("show");
+
+/* Heart burst animation */
+function heartBurst(n){
+  const hearts = ["💖","💘","💝","💕","💗"];
+  const cx = innerWidth/2, cy = innerHeight/2;
+
+  for(let i=0;i<n;i++){
+    const span = document.createElement("span");
+    span.className = "heart";
+    span.textContent = hearts[Math.floor(Math.random()*hearts.length)];
+    span.style.left = cx + "px";
+    span.style.top  = cy + "px";
+
+    const angle = Math.random()*Math.PI*2;
+    const dist  = 80 + Math.random()*140;
+
+    const x = Math.cos(angle)*dist;
+    const y = Math.sin(angle)*dist;
+
+    span.animate([
+      {transform:"translate(-50%,-50%) scale(1)", opacity:1},
+      {transform:`translate(${x}px,${y}px) scale(0.8)`, opacity:0}
+    ],{
+      duration:900 + Math.random()*500,
+      easing:"ease-out",
+      fill:"forwards"
+    });
+
+    document.body.appendChild(span);
+    setTimeout(()=>span.remove(),1500);
+  }
+}
 </script>
+
 </body>
 </html>
