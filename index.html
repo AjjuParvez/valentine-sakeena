@@ -23,7 +23,7 @@ html,body{
   color:var(--text);
 }
 
-/* 💗 HEART WATERMARK */
+/* HEART WATERMARK */
 .watermark{
   position:fixed; inset:0; pointer-events:none; z-index:0;
   opacity:.12;
@@ -32,7 +32,7 @@ html,body{
     url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><text x='55' y='110' font-size='55'>💕</text></svg>") repeat;
 }
 
-/* MAIN CARD */
+/* CARD */
 .wrap{
   height:100%; display:grid; place-items:center;
   position:relative; z-index:1;
@@ -55,24 +55,22 @@ h1{
   min-height:70px;
 }
 
-/* BUTTON ROW */
+/* BUTTON AREA (DESKTOP default: side by side) */
 .btns{
   display:flex;
   justify-content:center;
   align-items:center;
   gap:20px;
   margin-top:10px;
+  position:relative;
 }
 
 /* BUTTONS */
 button{
   padding:14px 28px;
-  font-size:20px; 
-  font-weight:700;
-  border:none; 
-  border-radius:999px;
-  cursor:pointer; 
-  user-select:none;
+  font-size:20px; font-weight:700;
+  border:none; border-radius:999px;
+  cursor:pointer; user-select:none;
 }
 
 .yes{
@@ -86,7 +84,7 @@ button{
   background:white;
   color:var(--pink);
   border:2px solid var(--pink);
-  position:fixed;     /* roam full screen */
+  position:fixed;      /* roam entire screen */
   z-index:50;
 }
 
@@ -101,10 +99,22 @@ button{
   animation: bounceSpin 0.45s ease-out;
 }
 
-/* FOOTER */
-.footer{ 
-  margin-top:12px; 
+.footer{
+  margin-top:12px;
   opacity:.65;
+}
+
+/* MOBILE FIX: STACK UP & DOWN */
+@media (max-width: 480px){
+  .btns{
+    flex-direction:column;
+    gap:22px;
+    margin-top:5px;
+  }
+  
+  .yes{
+    margin-top:60px;
+  }
 }
 
 /* OVERLAY */
@@ -174,7 +184,7 @@ let i = 0;
   }
 })();
 
-/* BUTTON LOGIC */
+/* LOGIC */
 const yesBtn = document.getElementById("yesBtn");
 const noBtn  = document.getElementById("noBtn");
 const overlay= document.getElementById("overlay");
@@ -189,14 +199,12 @@ function moveNoAnywhere(){
   const x = Math.random() * maxX;
   const y = Math.random() * maxY;
 
-  // random rotation
   const angle = Math.floor(Math.random() * 360);
 
   noBtn.style.left = x + "px";
   noBtn.style.top  = y + "px";
   noBtn.style.transform = `rotate(${angle}deg)`;
 
-  // bounce animation
   noBtn.classList.remove("animateBounce");
   void noBtn.offsetWidth;
   noBtn.classList.add("animateBounce");
