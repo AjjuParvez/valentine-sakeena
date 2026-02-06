@@ -23,9 +23,9 @@ html,body{
   color:var(--text);
 }
 
-/* 💗 HEART WATERMARK */
+/* HEART WATERMARK */
 .watermark{
-  position:fixed; inset:0; pointer-events:none; z-index:0;
+  position:fixed; inset:0; pointer-events:none z-index:0;
   opacity:.13;
   background:
     url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><text x='45' y='90' font-size='48'>💖</text></svg>") repeat,
@@ -52,26 +52,24 @@ html,body{
 h1{
   color:var(--pink);
   font-size:clamp(26px,5.2vw,40px);
-  margin:0 0 12px;
+  margin:0 0 20px;
   min-height:70px;
 }
 
-/* SUBTITLE */
-.subtitle{ opacity:.7; }
-
 /* BUTTON AREA */
 .btns{
-  margin-top:18px;
   display:flex;
   justify-content:center;
-  gap:16px;
-  min-height:160px;
+  align-items:center;
+  gap:20px;
+  margin-top:10px;
+  min-height:100px;
   position:relative;
 }
 
-/* BUTTON STYLES */
+/* BUTTONS */
 button{
-  padding:16px 28px;
+  padding:14px 28px;
   font-size:20px; font-weight:700;
   border:none; border-radius:999px;
   cursor:pointer; user-select:none;
@@ -81,29 +79,20 @@ button{
   background:linear-gradient(180deg, var(--pink), var(--hot));
   color:white;
 }
-.yes:hover{ transform:scale(1.05); }
 
 .no{
   background:white;
   color:var(--pink);
   border:2px solid var(--pink);
-  position:absolute; /* stays inside btns area */
+  position:absolute;
   z-index:5;
 }
 
-.footer{ opacity:.6; margin-top:6px; }
-
-/* MOBILE FIX */
+/* MOBILE FIX — keep them side by side */
 @media (max-width: 480px){
   .btns{
-    flex-direction: column;
-    min-height: 230px;
-  }
-  .no{
-    top:0 !important;
-  }
-  .yes{
-    margin-top:120px;
+    flex-direction: row !important;
+    min-height: 120px;
   }
 }
 
@@ -116,14 +105,10 @@ button{
 }
 .overlay.show{ display:flex; }
 
-.wrapGif{
-  position:relative;
-}
 .wrapGif img{
   width:100%; max-width:460px;
   border-radius:12px;
 }
-
 .yay{
   position:absolute;
   top:14px; left:50%; transform:translateX(-50%);
@@ -147,7 +132,6 @@ button{
 <div class="wrap">
   <div class="card">
     <h1 id="title"></h1>
-    <p class="subtitle">I promise unlimited smiles and your favorite snacks. 😄</p>
 
     <div class="btns" id="btnBox">
       <button class="no" id="noBtn">No 😅</button>
@@ -186,12 +170,12 @@ const box    = document.getElementById("btnBox");
 const overlay= document.getElementById("overlay");
 const gif    = document.getElementById("gif");
 
-/* ❤️ MOVE NO BUTTON INSIDE SAFE AREA */
+/* MOVE NO BUTTON SAFELY INSIDE BUTTON BOX */
 function moveNo(){
   const boxRect = box.getBoundingClientRect();
   const noRect  = noBtn.getBoundingClientRect();
 
-  const padding = 20;
+  const padding = 15;
 
   let maxX = boxRect.width - noRect.width - padding;
   let maxY = boxRect.height - noRect.height - padding;
@@ -206,7 +190,7 @@ function moveNo(){
   noBtn.style.top  = y + "px";
 }
 
-/* Trigger jump */
+/* Trigger NO jump */
 ["mouseenter","mouseover","mousemove","touchstart"].forEach(evt=>{
   noBtn.addEventListener(evt, e=>{
     e.preventDefault();
@@ -218,7 +202,6 @@ function moveNo(){
 yesBtn.onclick = ()=>{
   title.textContent = "YAY! 💘";
   heartBurst(30);
-
   gif.src = "https://media.giphy.com/media/3kvYEldEEr0DC/giphy.gif";
   overlay.classList.add("show");
 };
