@@ -35,7 +35,7 @@ html,body{
 /* CARD */
 .wrap{
   height:100%; display:grid; place-items:center;
-  position:relative; z-index:1;
+  position:relative; z-index:5;
 }
 .card{
   width:min(94vw, 680px);
@@ -46,7 +46,6 @@ html,body{
   box-shadow:0 16px 42px rgba(255,63,142,.20);
   border:1px solid #ffe0ee;
 
-  /* Entrance animation */
   animation: popIn 0.8s ease-out;
 }
 @keyframes popIn {
@@ -62,7 +61,6 @@ h1{
   margin:0 0 20px;
   min-height:70px;
 
-  /* Title fade */
   animation: fadeSlide 1.2s ease forwards;
 }
 @keyframes fadeSlide {
@@ -70,7 +68,7 @@ h1{
   100% { opacity: 1; transform: translateY(0); }
 }
 
-/* BUTTON AREA  */
+/* BUTTON AREA */
 .btns{
   display:flex;
   justify-content:center;
@@ -80,7 +78,6 @@ h1{
   position:relative;
 }
 
-/* BUTTONS */
 button{
   padding:14px 28px;
   font-size:20px; font-weight:700;
@@ -103,7 +100,6 @@ button{
   z-index:20;
 }
 
-/* NO BUTTON ANIMATION */
 @keyframes bounceSpin {
   0%   { transform: scale(1) rotate(0deg); }
   35%  { transform: scale(1.25) rotate(15deg); }
@@ -126,7 +122,6 @@ button{
     gap:22px;
     margin-top:5px;
   }
-  
   .yes{
     margin-top:60px;
   }
@@ -159,14 +154,14 @@ button{
   z-index:999;
 }
 
-/* FLOATING SPARKLES */
+/* SPARKLES */
 .sparkle {
   position: fixed;
   font-size: 18px;
   pointer-events: none;
   animation: floatUp 2s linear forwards;
   opacity: 0.8;
-  z-index: 5;
+  z-index: 2;
 }
 @keyframes floatUp {
   0% { transform: translateY(0) scale(1); opacity: 1; }
@@ -184,6 +179,38 @@ button{
 @keyframes fadeHeart {
   0%   { opacity: 1; transform: scale(1) translate(-50%, -50%); }
   100% { opacity: 0; transform: scale(0.4) translate(-50%, -50%); }
+}
+
+/* ROSE PETALS */
+.petal {
+  position: fixed;
+  top: -50px;
+  font-size: 22px;
+  pointer-events: none;
+  z-index: 4;
+  animation: fall 4s linear forwards, sway 2s ease-in-out infinite alternate;
+}
+@keyframes fall {
+  0%   { transform: translateY(0) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(120vh) rotate(360deg); opacity: 0; }
+}
+@keyframes sway {
+  0%   { transform: translateX(-20px); }
+  100% { transform: translateX(20px); }
+}
+
+/* 3D FLOATING HEARTS */
+.floatHeart {
+  position: fixed;
+  font-size: 26px;
+  opacity: 0.7;
+  z-index: 1;
+  animation: drift 10s linear infinite;
+}
+@keyframes drift {
+  0%   { transform: translateY(100vh) translateX(0) scale(1); }
+  50%  { transform: translateY(50vh) translateX(-40px) scale(1.3); }
+  100% { transform: translateY(-20vh) translateX(40px) scale(0.8); }
 }
 </style>
 </head>
@@ -226,7 +253,7 @@ let i = 0;
   }
 })();
 
-/* LOGIC */
+/* BUTTON LOGIC */
 const yesBtn = document.getElementById("yesBtn");
 const noBtn  = document.getElementById("noBtn");
 const overlay= document.getElementById("overlay");
@@ -234,7 +261,6 @@ const gif    = document.getElementById("gif");
 
 let activated = false;
 
-/* Activate NO roaming only after first touch */
 function activateNoRoaming(){
   if(!activated){
     noBtn.style.position = "fixed";
@@ -242,7 +268,6 @@ function activateNoRoaming(){
   }
 }
 
-/* NO BUTTON MOVE */
 function moveNoAnywhere(){
   const padding = 20;
   const maxX = window.innerWidth  - noBtn.offsetWidth  - padding;
@@ -262,7 +287,6 @@ function moveNoAnywhere(){
   noBtn.classList.add("animateBounce");
 }
 
-/* NO button interactions */
 ["mouseenter","mouseover","mousemove","touchstart","click"].forEach(evt=>{
   noBtn.addEventListener(evt, e=>{
     e.preventDefault();
@@ -278,7 +302,6 @@ yesBtn.onclick = ()=>{
   gif.src = "https://media.giphy.com/media/3kvYEldEEr0DC/giphy.gif";
   overlay.classList.add("show");
 };
-
 overlay.onclick = ()=> overlay.classList.remove("show");
 
 /* HEART BURST */
@@ -310,7 +333,7 @@ function heartBurst(n){
   }
 }
 
-/* FLOATING SPARKLES */
+/* SPARKLES */
 setInterval(()=>{
   const sparkle = document.createElement("div");
   sparkle.className = "sparkle";
@@ -331,14 +354,38 @@ function dropHeart(x, y){
   document.body.appendChild(h);
   setTimeout(()=>h.remove(), 1000);
 }
-
 window.addEventListener("mousemove", e => dropHeart(e.clientX, e.clientY));
 window.addEventListener("touchmove", e => {
   const t = e.touches[0];
   dropHeart(t.clientX, t.clientY);
 });
+
+/* ROSE PETALS */
+function dropPetal(){
+  const p = document.createElement("div");
+  p.className = "petal";
+  p.textContent = "🌹";
+  p.style.left = Math.random() * window.innerWidth + "px";
+  p.style.fontSize = (20 + Math.random() * 14) + "px";
+  document.body.appendChild(p);
+  setTimeout(()=>p.remove(),4000);
+}
+setInterval(dropPetal, 450);
+
+/* 3D FLOATING HEARTS */
+function floatHeart(){
+  const h = document.createElement("div");
+  h.className = "floatHeart";
+  h.textContent = "💗";
+
+  h.style.left = Math.random() * window.innerWidth + "px";
+  h.style.animationDuration = (8 + Math.random()*6) + "s";
+
+  document.body.appendChild(h);
+  setTimeout(()=>h.remove(),10000);
+}
+setInterval(floatHeart, 800);
 </script>
 
 </body>
 </html>
-``
