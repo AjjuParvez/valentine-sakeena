@@ -4,135 +4,141 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Valentine for Sakeena Fathima</title>
+
 <style>
-  :root{
-    --pink:#ff3f8e;
-    --hot:#ff1e6e;
-    --light:#fff3f8;
-    --text:#2b2b2b;
-    --card:#ffffff;
-    --shadow:0 14px 42px rgba(255,63,142,.20), 0 6px 18px rgba(0,0,0,.05);
-  }
+/* COLORS */
+:root{
+  --pink:#ff3f8e;
+  --hot:#ff1e6e;
+  --bg:#ffd9ea; /* plain soft pink */
+  --text:#2b2b2b;
+  --card:#ffffff;
+}
 
-  /* Animated dreamy background */
-  html,body{
-    height:100%; margin:0; overflow:hidden; color:var(--text);
-    font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
-    background: linear-gradient(135deg,#ffdde9,#ffe6f7,#ffd1e8);
-    background-size: 400% 400%;
-    animation: gradientShift 12s ease-in-out infinite;
-  }
-  @keyframes gradientShift{
-    0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}
-  }
+/* BACKGROUND */
+html,body{
+  margin:0; padding:0;
+  height:100%; overflow:hidden;
+  background: var(--bg);
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  color:var(--text);
+}
 
-  /* Floating background hearts (light) */
-  .bg{
-    position:fixed; inset:0; pointer-events:none; z-index:0; opacity:.18;
-  }
-  .float{
-    position:absolute; font-size:24px; animation: drift linear infinite; filter: blur(.2px);
-  }
-  @keyframes drift{
-    from{ transform: translateY(110vh) translateX(0) rotate(0deg); opacity:0; }
-    12% { opacity:.8; }
-    to  { transform: translateY(-15vh) translateX(60px) rotate(360deg); opacity:0; }
-  }
+/* 💗 Heart Emoji Watermark Background */
+.watermark{
+  position:fixed; inset:0; pointer-events:none; z-index:0;
+  opacity:.13;
+  background:
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><text x='45' y='90' font-size='48'>💖</text></svg>") repeat,
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><text x='50' y='100' font-size='52'>💕</text></svg>") repeat,
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><text x='60' y='110' font-size='56'>💞</text></svg>") repeat;
+}
 
-  /* Center card */
-  .wrap{
-    position:relative; height:100%;
-    display:grid; place-items:center;
-    z-index:1; padding:18px;
-  }
-  .card{
-    width:min(94vw, 680px);
-    padding:34px 26px 40px;
-    background:var(--card);
-    border-radius:22px;
-    box-shadow: var(--shadow);
-    text-align:center;
-    border: 1px solid #ffe0ee;
-    transform-style: preserve-3d;
-    transition: transform .15s ease-out;
-  }
+/* CENTER CARD */
+.wrap{
+  height:100%; display:grid; place-items:center;
+  position:relative; z-index:1;
+}
+.card{
+  width:min(94vw, 680px);
+  padding:34px 26px 40px;
+  background:white;
+  border-radius:22px;
+  text-align:center;
+  box-shadow:0 16px 42px rgba(255,63,142,.20);
+  border:1px solid #ffe0ee;
+}
 
-  h1{
-    margin:0 0 12px; color:var(--pink);
-    font-size:clamp(26px,5.2vw,40px);
-    line-height:1.22; letter-spacing:.2px;
-  }
-  .subtitle{
-    margin:0 0 6px;
-    font-size:clamp(14px,3.5vw,16px);
-    opacity:.7;
-  }
+/* TITLE */
+h1{
+  color:var(--pink);
+  margin:0 0 12px;
+  font-size:clamp(26px,5vw,40px);
+  min-height:70px;
+}
 
-  .btns{
-    display:flex; align-items:center; justify-content:center;
-    gap:16px; margin-top:18px;
-    min-height:150px; position:relative;
-  }
-  button{
-    cursor:pointer; border:none; padding:16px 28px;
-    border-radius:999px; font-weight:700; font-size:20px;
-    transition:transform .2s ease, left .3s ease, top .3s ease;
-  }
+/* SUBTITLE */
+.subtitle{
+  opacity:.7;
+}
 
-  .yes{
-    background:linear-gradient(180deg, var(--pink), var(--hot));
-    color:#fff;
-  }
-  .yes:hover{ transform: translateY(2px) scale(1.05); }
+/* BUTTON AREA */
+.btns{
+  margin-top:18px;
+  display:flex; justify-content:center;
+  gap:16px;
+  min-height:140px;
+  position:relative;
+}
 
-  .no{
-    background:#fff;
-    color:var(--pink);
-    border:2px solid var(--pink);
-    position:relative;
-  }
+/* BUTTONS */
+button{
+  font-size:20px; font-weight:700;
+  padding:16px 28px;
+  border:none; border-radius:999px;
+  cursor:pointer;
+}
 
-  .footer{ opacity:.65; margin-top:6px; }
+.yes{
+  background:linear-gradient(180deg, var(--pink), var(--hot));
+  color:white;
+}
+.yes:hover{ transform:scale(1.05); }
 
-  /* Overlay */
-  .overlay{
-    position:fixed; inset:0; background:rgba(0,0,0,.6);
-    display:none; align-items:center; justify-content:center; z-index:9999;
-  }
-  .overlay.show{ display:flex; }
-  .overlay img{ width:100%; max-width:500px; border-radius:12px; }
+.no{
+  background:white;
+  color:var(--pink);
+  border:2px solid var(--pink);
+  position:absolute;   /* THIS keeps it inside button area */
+  z-index:5;
+}
 
-  .yay{
-    position:absolute; top:12px; left:50%;
-    transform:translateX(-50%);
-    color:#fff; font-size:40px; font-weight:900;
-    text-shadow:0 2px 12px rgba(0,0,0,.45);
-  }
+/* FOOTER */
+.footer{
+  opacity:.6;
+  margin-top:6px;
+}
 
-  /* Falling hearts */
-  .heart{
-    position:fixed;
-    font-size:20px;
-    pointer-events:none;
-    animation: fall 1.4s linear forwards;
-  }
-  @keyframes fall{
-    to{ transform:translateY(120vh) rotate(360deg); opacity:0; }
-  }
+/* OVERLAY */
+.overlay{
+  position:fixed; inset:0;
+  background:rgba(0,0,0,.6);
+  display:none; z-index:9999;
+  justify-content:center; align-items:center;
+}
+.overlay.show{ display:flex; }
+.overlay img{
+  width:100%; max-width:460px;
+  border-radius:12px;
+}
+.yay{
+  position:absolute;
+  top:14px; left:50%; transform:translateX(-50%);
+  color:white; font-size:40px; font-weight:900;
+}
+
+/* HEART BURST */
+.heart{
+  position:fixed;
+  font-size:22px;
+  pointer-events:none;
+  z-index:999;
+}
 </style>
 </head>
 
 <body>
 
-<div class="bg" id="bg"></div>
+<!-- ❤️ WATERMARK -->
+<div class="watermark"></div>
 
+<!-- CARD -->
 <div class="wrap">
-  <div class="card" id="card">
+  <div class="card">
     <h1 id="title"></h1>
-
     <p class="subtitle">I promise unlimited smiles and your favorite snacks. 😄</p>
 
-    <div class="btns">
+    <div class="btns" id="btnBox">
       <button class="yes" id="yesBtn">Yes 💕</button>
       <button class="no" id="noBtn">No 😅</button>
     </div>
@@ -141,90 +147,96 @@
   </div>
 </div>
 
-<!-- Overlay -->
+<!-- OVERLAY -->
 <div class="overlay" id="overlay">
   <div class="wrapGif">
     <div class="yay">YAY 🎉</div>
-    <img id="shockGif">
+    <img id="gif">
   </div>
 </div>
 
 <script>
-/* ---------------- Typing Effect ---------------- */
+/* TYPING TITLE */
 const title = document.getElementById("title");
-const text = "Sakeena Fathima,\nwill you be my Valentine? 💖";
-let idx = 0;
-(function typing(){
-  if(idx < text.length){
-    title.innerHTML += text[idx] === "\n" ? "<br>" : text[idx];
-    idx++;
-    setTimeout(typing, 28);
+const msg = "Sakeena Fathima,\nwill you be my Valentine? 💖";
+let i = 0;
+(function type(){
+  if(i < msg.length){
+    title.innerHTML += msg[i] === "\n" ? "<br>" : msg[i];
+    i++;
+    setTimeout(type, 26);
   }
 })();
 
-/* ---------------- Floating Background Hearts ---------------- */
-const bg = document.getElementById("bg");
-const hearts = ["💖","💘","💝","💕","💗"];
-function spawnBgHearts(n=35){
-  const vw = innerWidth;
-  for(let i=0;i<n;i++){
-    const s = document.createElement("span");
-    s.className="float";
-    s.textContent = hearts[Math.floor(Math.random()*hearts.length)];
-    s.style.left = (Math.random()*vw) + "px";
-    s.style.fontSize = (18 + Math.random()*20) + "px";
-    s.style.animationDuration = (8 + Math.random()*8) + "s";
-    s.style.animationDelay = (Math.random()*5) + "s";
-    bg.appendChild(s);
-  }
-}
-spawnBgHearts();
+/* BUTTONS */
+const yesBtn = document.getElementById("yesBtn");
+const noBtn  = document.getElementById("noBtn");
+const box    = document.getElementById("btnBox");
+const overlay= document.getElementById("overlay");
+const gif    = document.getElementById("gif");
 
-/* ---------------- NO Button Movement ---------------- */
-const noBtn = document.getElementById("noBtn");
-
+/* ❤️ KEEP NO BUTTON INSIDE CARD */
 function moveNo(){
-  const maxX = innerWidth - noBtn.offsetWidth - 20;
-  const maxY = innerHeight - noBtn.offsetHeight - 20;
+  const boxRect = box.getBoundingClientRect();
+  const noRect  = noBtn.getBoundingClientRect();
 
-  noBtn.style.position = "fixed";
-  noBtn.style.left = Math.random()*maxX + "px";
-  noBtn.style.top  = Math.random()*maxY + "px";
+  const padding = 10;
+
+  const maxX = boxRect.width - noRect.width  - padding;
+  const maxY = boxRect.height- noRect.height - padding;
+
+  const x = Math.random()*maxX;
+  const y = Math.random()*maxY;
+
+  noBtn.style.left = x + "px";
+  noBtn.style.top  = y + "px";
 }
 
-["mouseenter","touchstart","mouseover","mousemove"].forEach(evt=>{
+/* Trigger NO jump */
+["mouseenter","mouseover","mousemove","touchstart"].forEach(evt=>{
   noBtn.addEventListener(evt, e=>{
     e.preventDefault();
     moveNo();
   });
 });
 
-/* ---------------- YES Action ---------------- */
-const yesBtn = document.getElementById("yesBtn");
-const overlay = document.getElementById("overlay");
-const shockGif = document.getElementById("shockGif");
-
+/* YES CLICK */
 yesBtn.onclick = ()=>{
   title.textContent = "YAY! 💘";
   heartBurst(30);
-  shockGif.src = "https://media.giphy.com/media/3kvYEldEEr0DC/giphy.gif";
+
+  gif.src = "https://media.giphy.com/media/3kvYEldEEr0DC/giphy.gif";
   overlay.classList.add("show");
 };
 
-/* Close overlay */
 overlay.onclick = ()=> overlay.classList.remove("show");
 
-/* ---------------- Heart Burst ---------------- */
+/* HEART BURST */
 function heartBurst(n){
+  const hearts = ["💖","💘","💝","💕","💗"];
   for(let i=0;i<n;i++){
     const span = document.createElement("span");
-    span.className="heart";
+    span.className = "heart";
     span.textContent = hearts[Math.floor(Math.random()*hearts.length)];
     span.style.left = (innerWidth/2) + "px";
     span.style.top  = (innerHeight/2) + "px";
-    span.style.fontSize = (16 + Math.random()*20) + "px";
+
+    const angle = Math.random()*Math.PI*2;
+    const dist  = 80 + Math.random()*120;
+    const x = Math.cos(angle)*dist;
+    const y = Math.sin(angle)*dist;
+
+    span.animate([
+      {transform:"translate(-50%, -50%) scale(1)", opacity:1},
+      {transform:`translate(${x}px,${y}px) scale(.8)`, opacity:0}
+    ],{
+      duration:900 + Math.random()*400,
+      easing:"ease-out",
+      fill:"forwards"
+    });
+
     document.body.appendChild(span);
-    setTimeout(()=> span.remove(),1500);
+    setTimeout(()=>span.remove(),1500);
   }
 }
 </script>
