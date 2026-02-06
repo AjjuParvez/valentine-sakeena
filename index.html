@@ -217,9 +217,9 @@ button{
 
 <body>
 
-<!-- MUSIC AUTOPLAY (Working Link) -->
+<!-- MUSIC using GitHub Pages URL -->
 <audio id="bgMusic" loop>
-  https://raw.githubusercontent.com/AjjuParvez/valentine-sakeena/main/romantic.mp3?raw=1
+  https://ajjuparvez.github.io/valentine-sakeena/romantic.mp3
 </audio>
 
 <div class="watermark"></div>
@@ -306,7 +306,7 @@ yesBtn.onclick = ()=>{
   gif.src = "https://media.giphy.com/media/3kvYEldEEr0DC/giphy.gif";
   overlay.classList.add("show");
 
-  playMusicSafe();
+  playMusicSafe(); // ensure iPhone starts on first tap
 };
 overlay.onclick = ()=> overlay.classList.remove("show");
 
@@ -366,7 +366,6 @@ window.addEventListener("touchmove", e => {
   dropHeart(t.clientX, t.clientY);
 });
 
-
 /* ROSE PETALS */
 function dropPetal(){
   const p = document.createElement("div");
@@ -391,13 +390,11 @@ function floatHeart(){
 }
 setInterval(floatHeart, 800);
 
-
-/* MUSIC — iPhone Compatible */
+/* MUSIC — iPhone Compatible (must be tied to a gesture) */
 function playMusicSafe() {
   const bgMusic = document.getElementById("bgMusic");
   bgMusic.play().catch(()=>{});
 }
-
 yesBtn.addEventListener("click", playMusicSafe);
 noBtn.addEventListener("click", playMusicSafe);
 </script>
