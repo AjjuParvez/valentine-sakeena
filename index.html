@@ -6,11 +6,10 @@
 <title>Valentine for Sakeena Fathima</title>
 
 <style>
-/* COLORS */
 :root{
   --pink:#ff3f8e;
   --hot:#ff1e6e;
-  --bg:#ffd9ea; /* plain soft pink */
+  --bg:#ffd9ea;
   --text:#2b2b2b;
   --card:#ffffff;
 }
@@ -24,7 +23,7 @@ html,body{
   color:var(--text);
 }
 
-/* 💗 Heart Emoji Watermark Background */
+/* 💗 HEART WATERMARK */
 .watermark{
   position:fixed; inset:0; pointer-events:none; z-index:0;
   opacity:.13;
@@ -34,7 +33,7 @@ html,body{
     url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><text x='60' y='110' font-size='56'>💞</text></svg>") repeat;
 }
 
-/* CENTER CARD */
+/* CARD */
 .wrap{
   height:100%; display:grid; place-items:center;
   position:relative; z-index:1;
@@ -52,31 +51,30 @@ html,body{
 /* TITLE */
 h1{
   color:var(--pink);
+  font-size:clamp(26px,5.2vw,40px);
   margin:0 0 12px;
-  font-size:clamp(26px,5vw,40px);
   min-height:70px;
 }
 
 /* SUBTITLE */
-.subtitle{
-  opacity:.7;
-}
+.subtitle{ opacity:.7; }
 
 /* BUTTON AREA */
 .btns{
   margin-top:18px;
-  display:flex; justify-content:center;
+  display:flex;
+  justify-content:center;
   gap:16px;
-  min-height:140px;
+  min-height:160px;
   position:relative;
 }
 
-/* BUTTONS */
+/* BUTTON STYLES */
 button{
-  font-size:20px; font-weight:700;
   padding:16px 28px;
+  font-size:20px; font-weight:700;
   border:none; border-radius:999px;
-  cursor:pointer;
+  cursor:pointer; user-select:none;
 }
 
 .yes{
@@ -89,14 +87,24 @@ button{
   background:white;
   color:var(--pink);
   border:2px solid var(--pink);
-  position:absolute;   /* THIS keeps it inside button area */
+  position:absolute; /* stays inside btns area */
   z-index:5;
 }
 
-/* FOOTER */
-.footer{
-  opacity:.6;
-  margin-top:6px;
+.footer{ opacity:.6; margin-top:6px; }
+
+/* MOBILE FIX */
+@media (max-width: 480px){
+  .btns{
+    flex-direction: column;
+    min-height: 230px;
+  }
+  .no{
+    top:0 !important;
+  }
+  .yes{
+    margin-top:120px;
+  }
 }
 
 /* OVERLAY */
@@ -107,10 +115,15 @@ button{
   justify-content:center; align-items:center;
 }
 .overlay.show{ display:flex; }
-.overlay img{
+
+.wrapGif{
+  position:relative;
+}
+.wrapGif img{
   width:100%; max-width:460px;
   border-radius:12px;
 }
+
 .yay{
   position:absolute;
   top:14px; left:50%; transform:translateX(-50%);
@@ -129,18 +142,16 @@ button{
 
 <body>
 
-<!-- ❤️ WATERMARK -->
 <div class="watermark"></div>
 
-<!-- CARD -->
 <div class="wrap">
   <div class="card">
     <h1 id="title"></h1>
     <p class="subtitle">I promise unlimited smiles and your favorite snacks. 😄</p>
 
     <div class="btns" id="btnBox">
-      <button class="yes" id="yesBtn">Yes 💕</button>
       <button class="no" id="noBtn">No 😅</button>
+      <button class="yes" id="yesBtn">Yes 💕</button>
     </div>
 
     <div class="footer">(Try tapping “No”) 😉</div>
@@ -156,7 +167,7 @@ button{
 </div>
 
 <script>
-/* TYPING TITLE */
+/* TYPING EFFECT */
 const title = document.getElementById("title");
 const msg = "Sakeena Fathima,\nwill you be my Valentine? 💖";
 let i = 0;
@@ -168,22 +179,25 @@ let i = 0;
   }
 })();
 
-/* BUTTONS */
+/* BUTTON LOGIC */
 const yesBtn = document.getElementById("yesBtn");
 const noBtn  = document.getElementById("noBtn");
 const box    = document.getElementById("btnBox");
 const overlay= document.getElementById("overlay");
 const gif    = document.getElementById("gif");
 
-/* ❤️ KEEP NO BUTTON INSIDE CARD */
+/* ❤️ MOVE NO BUTTON INSIDE SAFE AREA */
 function moveNo(){
   const boxRect = box.getBoundingClientRect();
   const noRect  = noBtn.getBoundingClientRect();
 
-  const padding = 10;
+  const padding = 20;
 
-  const maxX = boxRect.width - noRect.width  - padding;
-  const maxY = boxRect.height- noRect.height - padding;
+  let maxX = boxRect.width - noRect.width - padding;
+  let maxY = boxRect.height - noRect.height - padding;
+
+  if(maxX < 0) maxX = 0;
+  if(maxY < 0) maxY = 0;
 
   const x = Math.random()*maxX;
   const y = Math.random()*maxY;
@@ -192,7 +206,7 @@ function moveNo(){
   noBtn.style.top  = y + "px";
 }
 
-/* Trigger NO jump */
+/* Trigger jump */
 ["mouseenter","mouseover","mousemove","touchstart"].forEach(evt=>{
   noBtn.addEventListener(evt, e=>{
     e.preventDefault();
@@ -200,7 +214,7 @@ function moveNo(){
   });
 });
 
-/* YES CLICK */
+/* YES BUTTON */
 yesBtn.onclick = ()=>{
   title.textContent = "YAY! 💘";
   heartBurst(30);
