@@ -45,7 +45,6 @@ html,body{
   text-align:center;
   box-shadow:0 16px 42px rgba(255,63,142,.20);
   border:1px solid #ffe0ee;
-
   animation: popIn 0.8s ease-out;
 }
 @keyframes popIn {
@@ -60,7 +59,6 @@ h1{
   font-size:clamp(26px,5vw,40px);
   margin:0 0 20px;
   min-height:70px;
-
   animation: fadeSlide 1.2s ease forwards;
 }
 @keyframes fadeSlide {
@@ -100,6 +98,7 @@ button{
   z-index:20;
 }
 
+/* NO BUTTON JUMP */
 @keyframes bounceSpin {
   0%   { transform: scale(1) rotate(0deg); }
   35%  { transform: scale(1.25) rotate(15deg); }
@@ -110,6 +109,7 @@ button{
   animation: bounceSpin 0.45s ease-out;
 }
 
+/* FOOTER */
 .footer{
   margin-top:12px;
   opacity:.65;
@@ -212,10 +212,38 @@ button{
   50%  { transform: translateY(50vh) translateX(-40px) scale(1.3); }
   100% { transform: translateY(-20vh) translateX(40px) scale(0.8); }
 }
+
+/* MUSIC BUTTON */
+#musicBtn {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: var(--pink);
+  color: white;
+  padding: 12px 20px;
+  border-radius: 30px;
+  font-size: 16px;
+  cursor: pointer;
+  animation: pulse 1.4s infinite;
+  z-index: 99999;
+}
+
+@keyframes pulse {
+  0%   { transform: scale(1); opacity: 1; }
+  50%  { transform: scale(1.15); opacity: 0.85; }
+  100% { transform: scale(1); opacity: 1; }
+}
 </style>
 </head>
 
 <body>
+
+<!-- MUSIC PLAYER -->
+<audio id="bgMusic" loop>
+  https://cdn.pixabay.com/download/audio/2021/09/09/audio_0d70739e80.mp3
+</audio>
+
+<div id="musicBtn">🎵 Tap for Music</div>
 
 <div class="watermark"></div>
 
@@ -243,9 +271,7 @@ button{
 <script>
 /* TYPING EFFECT */
 const title = document.getElementById("title");
-
 const msg   = "Sakeena…\nwill you be my Valentine forever? 💖";
-
 let i = 0;
 (function type(){
   if(i < msg.length){
@@ -277,7 +303,6 @@ function moveNoAnywhere(){
 
   const x = Math.random() * maxX;
   const y = Math.random() * maxY;
-
   const angle = Math.floor(Math.random() * 360);
 
   noBtn.style.left = x + "px";
@@ -379,16 +404,30 @@ function floatHeart(){
   const h = document.createElement("div");
   h.className = "floatHeart";
   h.textContent = "💗";
-
   h.style.left = Math.random() * window.innerWidth + "px";
   h.style.animationDuration = (8 + Math.random()*6) + "s";
-
   document.body.appendChild(h);
   setTimeout(()=>h.remove(),10000);
 }
 setInterval(floatHeart, 800);
+
+/* MUSIC LOGIC */
+const bgMusic = document.getElementById("bgMusic");
+const musicBtn = document.getElementById("musicBtn");
+
+// Auto-play for Android & Desktop
+document.addEventListener("click", () => {
+  bgMusic.play().catch(()=>{});
+}, { once:true });
+
+// Manual play for iPhone
+musicBtn.addEventListener("click", () => {
+  bgMusic.play();
+  musicBtn.textContent = "❤️ Music Playing";
+  musicBtn.style.background = "var(--hot)";
+  setTimeout(()=> musicBtn.style.opacity = "0.4", 2000);
+});
 </script>
 
 </body>
 </html>
-``
