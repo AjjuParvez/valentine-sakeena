@@ -213,37 +213,20 @@ button{
   100% { transform: translateY(-20vh) translateX(40px) scale(0.8); }
 }
 
-/* MUSIC BUTTON */
+/* HIDE MUSIC BUTTON */
 #musicBtn {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  background: var(--pink);
-  color: white;
-  padding: 12px 20px;
-  border-radius: 30px;
-  font-size: 16px;
-  cursor: pointer;
-  animation: pulse 1.4s infinite;
-  z-index: 99999;
-}
-
-@keyframes pulse {
-  0%   { transform: scale(1); opacity: 1; }
-  50%  { transform: scale(1.15); opacity: 0.85; }
-  100% { transform: scale(1); opacity: 1; }
+  display:none !important;
 }
 </style>
 </head>
 
 <body>
 
-<!-- MUSIC PLAYER -->
+<!-- MUSIC (hidden autoplay) -->
 <audio id="bgMusic" loop>
   https://cdn.pixabay.com/download/audio/2021/09/09/audio_0d70739e80.mp3
 </audio>
-
-<div id="musicBtn">🎵 Tap for Music</div>
+<div id="musicBtn"></div>
 
 <div class="watermark"></div>
 
@@ -411,22 +394,20 @@ function floatHeart(){
 }
 setInterval(floatHeart, 800);
 
-/* MUSIC LOGIC */
+/* MUSIC LOGIC — AUTO + HIDDEN */
 const bgMusic = document.getElementById("bgMusic");
-const musicBtn = document.getElementById("musicBtn");
 
-// Auto-play for Android & Desktop
-document.addEventListener("click", () => {
+// Autoplay for Desktop/Android
+bgMusic.play().catch(()=>{});
+
+// iPhone requires first interaction
+document.addEventListener("touchstart", () => {
   bgMusic.play().catch(()=>{});
 }, { once:true });
 
-// Manual play for iPhone
-musicBtn.addEventListener("click", () => {
-  bgMusic.play();
-  musicBtn.textContent = "❤️ Music Playing";
-  musicBtn.style.background = "var(--hot)";
-  setTimeout(()=> musicBtn.style.opacity = "0.4", 2000);
-});
+document.addEventListener("click", () => {
+  bgMusic.play().catch(()=>{});
+}, { once:true });
 </script>
 
 </body>
