@@ -80,12 +80,13 @@ button{
   z-index:10;
 }
 
+/* FIX: NO starts inside layout, later becomes fixed when running away */
 .no{
   background:white;
   color:var(--pink);
   border:2px solid var(--pink);
-  position:fixed;      /* roam entire screen */
-  z-index:50;
+  position:relative; 
+  z-index:20;
 }
 
 /* BOUNCE + ROTATE ANIMATION */
@@ -190,6 +191,16 @@ const noBtn  = document.getElementById("noBtn");
 const overlay= document.getElementById("overlay");
 const gif    = document.getElementById("gif");
 
+/* Activate NO roaming only after first attempt */
+let activated = false;
+
+function activateNoRoaming(){
+  if(!activated){
+    noBtn.style.position = "fixed";
+    activated = true;
+  }
+}
+
 /* ❤️ NO BUTTON JUMPS ANYWHERE */
 function moveNoAnywhere(){
   const padding = 20;
@@ -214,6 +225,7 @@ function moveNoAnywhere(){
 ["mouseenter","mouseover","mousemove","touchstart","click"].forEach(evt=>{
   noBtn.addEventListener(evt, e=>{
     e.preventDefault();
+    activateNoRoaming(); 
     moveNoAnywhere();
   });
 });
