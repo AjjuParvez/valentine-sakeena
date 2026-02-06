@@ -45,6 +45,14 @@ html,body{
   text-align:center;
   box-shadow:0 16px 42px rgba(255,63,142,.20);
   border:1px solid #ffe0ee;
+
+  /* Entrance animation */
+  animation: popIn 0.8s ease-out;
+}
+@keyframes popIn {
+  0%   { transform: scale(0.5); opacity: 0; }
+  60%  { transform: scale(1.05); opacity: 1; }
+  100% { transform: scale(1); }
 }
 
 /* TITLE */
@@ -53,9 +61,16 @@ h1{
   font-size:clamp(26px,5vw,40px);
   margin:0 0 20px;
   min-height:70px;
+
+  /* Title fade */
+  animation: fadeSlide 1.2s ease forwards;
+}
+@keyframes fadeSlide {
+  0%   { opacity: 0; transform: translateY(20px); }
+  100% { opacity: 1; transform: translateY(0); }
 }
 
-/* BUTTON AREA (DESKTOP default: side by side) */
+/* BUTTON AREA  */
 .btns{
   display:flex;
   justify-content:center;
@@ -80,16 +95,15 @@ button{
   z-index:10;
 }
 
-/* FIX: NO starts inside layout, later becomes fixed when running away */
 .no{
   background:white;
   color:var(--pink);
   border:2px solid var(--pink);
-  position:relative; 
+  position:relative;
   z-index:20;
 }
 
-/* BOUNCE + ROTATE ANIMATION */
+/* NO BUTTON ANIMATION */
 @keyframes bounceSpin {
   0%   { transform: scale(1) rotate(0deg); }
   35%  { transform: scale(1.25) rotate(15deg); }
@@ -105,7 +119,7 @@ button{
   opacity:.65;
 }
 
-/* MOBILE FIX: STACK UP & DOWN */
+/* MOBILE */
 @media (max-width: 480px){
   .btns{
     flex-direction:column;
@@ -143,6 +157,33 @@ button{
   font-size:22px;
   pointer-events:none;
   z-index:999;
+}
+
+/* FLOATING SPARKLES */
+.sparkle {
+  position: fixed;
+  font-size: 18px;
+  pointer-events: none;
+  animation: floatUp 2s linear forwards;
+  opacity: 0.8;
+  z-index: 5;
+}
+@keyframes floatUp {
+  0% { transform: translateY(0) scale(1); opacity: 1; }
+  100% { transform: translateY(-120px) scale(0.4); opacity: 0; }
+}
+
+/* FINGER HEARTS */
+.fingerHeart {
+  position: fixed;
+  font-size: 22px;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  animation: fadeHeart 1s ease-out forwards;
+}
+@keyframes fadeHeart {
+  0%   { opacity: 1; transform: scale(1) translate(-50%, -50%); }
+  100% { opacity: 0; transform: scale(0.4) translate(-50%, -50%); }
 }
 </style>
 </head>
@@ -191,9 +232,9 @@ const noBtn  = document.getElementById("noBtn");
 const overlay= document.getElementById("overlay");
 const gif    = document.getElementById("gif");
 
-/* Activate NO roaming only after first attempt */
 let activated = false;
 
+/* Activate NO roaming only after first touch */
 function activateNoRoaming(){
   if(!activated){
     noBtn.style.position = "fixed";
@@ -201,7 +242,7 @@ function activateNoRoaming(){
   }
 }
 
-/* ❤️ NO BUTTON JUMPS ANYWHERE */
+/* NO BUTTON MOVE */
 function moveNoAnywhere(){
   const padding = 20;
   const maxX = window.innerWidth  - noBtn.offsetWidth  - padding;
@@ -221,7 +262,7 @@ function moveNoAnywhere(){
   noBtn.classList.add("animateBounce");
 }
 
-/* Trigger NO jump */
+/* NO button interactions */
 ["mouseenter","mouseover","mousemove","touchstart","click"].forEach(evt=>{
   noBtn.addEventListener(evt, e=>{
     e.preventDefault();
@@ -268,7 +309,36 @@ function heartBurst(n){
     setTimeout(()=>span.remove(),1500);
   }
 }
+
+/* FLOATING SPARKLES */
+setInterval(()=>{
+  const sparkle = document.createElement("div");
+  sparkle.className = "sparkle";
+  sparkle.textContent = "✨";
+  sparkle.style.left = Math.random() * window.innerWidth + "px";
+  sparkle.style.top  = window.innerHeight + "px";
+  document.body.appendChild(sparkle);
+  setTimeout(()=>sparkle.remove(), 2000);
+}, 500);
+
+/* HEART TRAIL */
+function dropHeart(x, y){
+  const h = document.createElement("div");
+  h.className = "fingerHeart";
+  h.textContent = "💖";
+  h.style.left = x + "px";
+  h.style.top  = y + "px";
+  document.body.appendChild(h);
+  setTimeout(()=>h.remove(), 1000);
+}
+
+window.addEventListener("mousemove", e => dropHeart(e.clientX, e.clientY));
+window.addEventListener("touchmove", e => {
+  const t = e.touches[0];
+  dropHeart(t.clientX, t.clientY);
+});
 </script>
 
 </body>
 </html>
+``
